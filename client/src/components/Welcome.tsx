@@ -1,8 +1,9 @@
-import React from "react";
+import { useContext } from "react";
 import { AiFillAlipayCircle } from "react-icons/ai";
 import { SiEthereum } from "react-icons/si";
 import { BsInfoCircle } from "react-icons/bs";
 import { Loader } from ".";
+import { TransactionContext } from "../context/TransactionContext";
 
 const defaulInputStyle =
   "my-2 w-full rounded-sm p-2 outline-none bg-transparent text-white border-none text-sm white-glassmorphism";
@@ -12,6 +13,10 @@ const Input = (props: any) => {
 };
 
 export default function Welcome() {
+  const { value } = useContext<any>(TransactionContext);
+
+  console.log(value);
+  
   const connectWallet = () => {};
 
   const handleChange = () => {};
