@@ -13,15 +13,18 @@ const Input = (props: any) => {
 };
 
 export default function Welcome() {
-  const { value } = useContext<any>(TransactionContext);
+  const { connectWallet, currentAccount, formData, sendTransaction, handleChange } =
+    useContext<any>(TransactionContext);
 
-  console.log(value);
-  
-  const connectWallet = () => {};
+  const handleSubmit = (e: any) => {
+    const { addressTo, amount, keyword, message } = formData;
 
-  const handleChange = () => {};
+    e.preventDefault();
 
-  const handleSubmit = () => {};
+    if (!addressTo || !amount || !keyword || !message) return;
+
+    sendTransaction()
+  };
 
   const commonStyles =
     "min-h-[70px] sm:px-0 px-2 font-base font-semi-bold sm:min-w-[120px] flex justify-center items-center border-[0.5px] border-gray-400 text-sm font-light text-white";
@@ -37,13 +40,15 @@ export default function Welcome() {
             Explore the crypto world. Buy and sell criptocurrencies easily on
             Krpit
           </p>
-          <button
-            type="button"
-            className="flex flex-row justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full text-white font-bold cursor-pointer hover:bg-[#2546bd]"
-            onClick={connectWallet}
-          >
-            Connect Wallet
-          </button>
+          {currentAccount && (
+            <button
+              type="button"
+              className="flex flex-row justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full text-white font-bold cursor-pointer hover:bg-[#2546bd]"
+              onClick={connectWallet}
+            >
+              Connect Wallet
+            </button>
+          )}
 
           <div className="grid sm:grid-cols-3 grid-cols-2 w-full mt-10">
             <div className={`rounded-tl-2xl ${commonStyles}`}>Reliability</div>
@@ -79,7 +84,7 @@ export default function Welcome() {
               name="addressTo"
               type="text"
               className={defaulInputStyle}
-              handleChange={handleChange}
+              onChange={ handleChange }
             />
 
             <Input
@@ -87,6 +92,7 @@ export default function Welcome() {
               name="amount"
               type="number"
               className={defaulInputStyle}
+              onChange={ handleChange }
             />
 
             <Input
@@ -94,7 +100,7 @@ export default function Welcome() {
               name="keyword"
               type="text"
               className={defaulInputStyle}
-              handleChange={handleChange}
+              onChange={ handleChange }
             />
 
             <Input
@@ -102,7 +108,7 @@ export default function Welcome() {
               name="message"
               type="text"
               className={defaulInputStyle}
-              handleChange={handleChange}
+              onChange={ handleChange }
             />
 
             <div className="h-[1px] w-full bg-gray-400 my-2" />
@@ -110,7 +116,11 @@ export default function Welcome() {
             {false ? (
               <Loader />
             ) : (
-              <button className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] rounded-full cursor-pointer" type="button" onClick={handleSubmit}>
+              <button
+                className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] rounded-full cursor-pointer"
+                type="button"
+                onClick={handleSubmit}
+              >
                 Send Now
               </button>
             )}
