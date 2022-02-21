@@ -4,6 +4,7 @@ import { SiEthereum } from "react-icons/si";
 import { BsInfoCircle } from "react-icons/bs";
 import { Loader } from ".";
 import { TransactionContext } from "../context/TransactionContext";
+import { shortenAddress } from "../utils/shortenAddress";
 
 const defaulInputStyle =
   "my-2 w-full rounded-sm p-2 outline-none bg-transparent text-white border-none text-sm white-glassmorphism";
@@ -13,8 +14,13 @@ const Input = (props: any) => {
 };
 
 export default function Welcome() {
-  const { connectWallet, currentAccount, formData, sendTransaction, handleChange } =
-    useContext<any>(TransactionContext);
+  const {
+    connectWallet,
+    currentAccount,
+    formData,
+    sendTransaction,
+    handleChange,
+  } = useContext<any>(TransactionContext);
 
   const handleSubmit = (e: any) => {
     const { addressTo, amount, keyword, message } = formData;
@@ -23,7 +29,7 @@ export default function Welcome() {
 
     if (!addressTo || !amount || !keyword || !message) return;
 
-    sendTransaction()
+    sendTransaction();
   };
 
   const commonStyles =
@@ -70,7 +76,9 @@ export default function Welcome() {
                 <BsInfoCircle fontSize={17} color="#ffff" />
               </div>
               <div>
-                <p className="text-white font-light text-sm">Address</p>
+                <p className="text-white font-light text-sm">
+                  {currentAccount ? shortenAddress(currentAccount) : null}
+                </p>
                 <p className="text-white font-semibold text-lg mt-1">
                   Ethereum.
                 </p>
@@ -84,7 +92,7 @@ export default function Welcome() {
               name="addressTo"
               type="text"
               className={defaulInputStyle}
-              onChange={ handleChange }
+              onChange={handleChange}
             />
 
             <Input
@@ -92,7 +100,7 @@ export default function Welcome() {
               name="amount"
               type="number"
               className={defaulInputStyle}
-              onChange={ handleChange }
+              onChange={handleChange}
             />
 
             <Input
@@ -100,7 +108,7 @@ export default function Welcome() {
               name="keyword"
               type="text"
               className={defaulInputStyle}
-              onChange={ handleChange }
+              onChange={handleChange}
             />
 
             <Input
@@ -108,7 +116,7 @@ export default function Welcome() {
               name="message"
               type="text"
               className={defaulInputStyle}
-              onChange={ handleChange }
+              onChange={handleChange}
             />
 
             <div className="h-[1px] w-full bg-gray-400 my-2" />
