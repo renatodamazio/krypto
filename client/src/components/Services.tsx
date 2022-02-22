@@ -36,7 +36,7 @@ export default function Services() {
       <div className="flex mf:flex-row flex-column items-center justify-between md:p-20 py-12 px-4">
         <div className="flex-1 flex-col justify-start items-start">
           <h1 className="text-white text-3xl sm:text-5xl py-2 text-gradient">
-            Services <br /> Continue to emprove.
+            Services <br /> Continue to improve.
           </h1>
         </div>
       </div>
