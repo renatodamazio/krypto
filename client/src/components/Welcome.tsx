@@ -47,7 +47,7 @@ export default function Welcome() {
             Explore the crypto world. Buy and sell criptocurrencies easily on
             Krpit
           </p>
-          {currentAccount && (
+          {!currentAccount && (
             <button
               type="button"
               className="flex flex-row justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full text-white font-bold cursor-pointer hover:bg-[#2546bd]"
