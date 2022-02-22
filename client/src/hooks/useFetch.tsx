@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const API_KEY = import.meta.env.VITE_GIPHY_API;
+const APIKEY = import.meta.env.VITE_GIPHY_API;
 
 interface fetchProps {
   keyword: string;
@@ -8,20 +8,21 @@ interface fetchProps {
 
 const useFetch = ({ keyword }: fetchProps) => {
   const [gifURL, setGifUrl] = useState<string>();
+  const notFound: string =
+    "https://media2.giphy.com/media/3o85xFXVQNndE6sy9a/giphy.gif?cid=ecf05e475opvu9x3diva5l6kxd2q2d9y17494evxixar0abl&rid=giphy.gif&ct=g";
 
   const fetchGifs = async () => {
     try {
-      const url: any = `https://api.gitphy.com/v1/gifs/search?api_key=${API_KEY}&q=${keyword
-        .split(" ")
-        .join("")}&limit=1`;
+      const query = keyword.split(" ").join("").split(" ").join("");
+      const url: any = `https://api.giphy.com/v1/gifs/search?api_key=${APIKEY}&q=${query}&limit=1`;
       const response = await fetch(url);
       const { data } = await response.json();
 
-      setGifUrl(url[0]?.images?.downsized_medium?.url);
+      if (data.length === 0) return setGifUrl(notFound);
+
+      setGifUrl(data[0]?.images?.downsized_medium?.url);
     } catch (error) {
-      setGifUrl(
-        "https://acegif.com/wp-content/uploads/gif-shaking-head-38.gif;"
-      );
+      setGifUrl(notFound);
     }
   };
 

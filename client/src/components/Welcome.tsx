@@ -19,6 +19,7 @@ export default function Welcome() {
     currentAccount,
     formData,
     sendTransaction,
+    isLoading,
     handleChange,
   } = useContext<any>(TransactionContext);
 
@@ -121,7 +122,7 @@ export default function Welcome() {
 
             <div className="h-[1px] w-full bg-gray-400 my-2" />
 
-            {false ? (
+            {isLoading ? (
               <Loader />
             ) : (
               <button

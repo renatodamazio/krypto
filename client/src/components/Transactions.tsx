@@ -80,7 +80,7 @@ const TransactionCard = ({
 };
 
 export default function Transactions() {
-  const { currentAccount } = useContext<any>(TransactionContext);
+  const { currentAccount, transactions } = useContext<any>(TransactionContext);
 
   return (
     <div className="flex w-full justify-center items-center 2xl:px-20 gradient-bg-transactions">
@@ -96,7 +96,7 @@ export default function Transactions() {
         )}
 
         <div className="flex flex-wrap justify-center items-center text-white mt-10">
-          {dummyData
+          {transactions
             .reverse()
             .map(
               (

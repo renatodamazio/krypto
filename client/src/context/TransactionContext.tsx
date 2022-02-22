@@ -20,6 +20,7 @@ const getEthereumContract = () => {
 
 export const TransactionsProvider = (props: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [transactions, setTransactions] = useState<any>([]);
   const [transactionCount, setTransactionCount] = useState<any>(
     localStorage.getItem("transactionCoung")
   );
@@ -38,6 +39,29 @@ export const TransactionsProvider = (props: any) => {
     }));
   };
 
+  const getAllTransactions = async () => {
+    try {
+      if (!ethereum) return alert("Please install metamask");
+
+      const transactionContract = getEthereumContract();
+      const availableTransactions =
+        await transactionContract.getAllTransactions();
+
+        const structuredTransactions = availableTransactions.map((transaction:any) => ({
+          addressTo: transaction.receiver,
+          addressFrom: transaction.sender,  
+          timestamp: new Date(transaction.timestamp.toNumber() * 1000).toLocaleString(),
+          message: transaction.message,
+          keyword: transaction.keyword,
+          amout: parseInt(transaction.amout._hex) / (10 ** 18)
+        }))
+
+      setTransactions(structuredTransactions);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const checkIfWalletidConnected = async () => {
     try {
       if (!ethereum) return alert("Please install metamask.");
@@ -47,7 +71,7 @@ export const TransactionsProvider = (props: any) => {
       if (accounts.length) {
         setCurrentAccount(accounts[0]);
 
-        // getAllTransactions();
+        getAllTransactions();
       } else {
         console.log("No Accounts found.");
       }
@@ -56,7 +80,19 @@ export const TransactionsProvider = (props: any) => {
 
   useEffect(() => {
     checkIfWalletidConnected();
+    checkIfTransactionsExist();
   }, []);
+
+  const checkIfTransactionsExist = async () => {
+    try {
+      const transactionContract = getEthereumContract();
+      const transactionCount = await transactionContract.transactionCount;
+
+      window.localStorage.setItem("transactionCount", transactionCount);
+    } catch (err) {
+      throw new Error("No ethereum object");
+    }
+  };
 
   const connectWallet = async () => {
     try {
@@ -77,7 +113,7 @@ export const TransactionsProvider = (props: any) => {
     try {
       if (!ethereum) return alert("Please install metamask");
 
-      const { addressTo, amount, keyword, message } = formData;
+      const { addressTo, amount, keyword, message }: any = formData;
 
       const transactionContract = getEthereumContract();
       const parseAmout = ethers.utils.parseEther(amount);
@@ -111,8 +147,10 @@ export const TransactionsProvider = (props: any) => {
 
       const transactionCount = await transactionContract.transactionCount();
       setTransactionCount(transactionCount.toNumber());
+
+      (window as any).reload();
     } catch (error) {
-      console.log("No etherem object");
+      throw new Error("No ethereum object");
     }
   };
 
@@ -121,7 +159,9 @@ export const TransactionsProvider = (props: any) => {
       value={{
         connectWallet,
         currentAccount,
+        isLoading,
         formData,
+        transactions,
         setFormData,
         handleChange,
         sendTransaction,
