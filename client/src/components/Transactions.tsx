@@ -1,6 +1,5 @@
 import { Key, useContext } from "react";
 import { TransactionContext } from "../context/TransactionContext";
-import dummyData from "../utils/dummyData";
 import { shortenAddress } from "../utils/shortenAddress";
 import useFetch from "../hooks/useFetch";
 interface TransactionCardInfo {
@@ -103,7 +102,17 @@ export default function Transactions() {
                 transaction: JSX.IntrinsicAttributes,
                 index: Key | null | undefined
               ) => (
-                <TransactionCard key={index} {...transaction} />
+                <TransactionCard
+                  key={index}
+                  addressTo={""}
+                  addressFrom={""}
+                  timestamp={0}
+                  message={""}
+                  keyword={""}
+                  amount={0}
+                  url={""}
+                  {...transaction}
+                />
               )
             )}
         </div>

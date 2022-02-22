@@ -2,9 +2,9 @@ import React, { useEffect, useState, createContext } from "react";
 import { ethers } from "ethers";
 import { contractABI, contractAddress } from "../utils/constants.js";
 
-export const TransactionContext = createContext("");
+export const TransactionContext = createContext<any>([]);
 
-const { ethereum } = window;
+const { ethereum } = (window as any);
 
 const getEthereumContract = () => {
   const provider = new ethers.providers.Web3Provider(ethereum);
